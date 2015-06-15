@@ -7,18 +7,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import com.bignerdranch.android.criminalintent.CrimeFragment.Callbacks;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
 /**
  * Created by andrew on 6/8/2015.
  */
-public class CrimePagerActivity extends FragmentActivity {
-    private ViewPager mViewPager;
-    private ArrayList<Crime> mCrimes;
+public class CrimePagerActivity extends FragmentActivity implements Callbacks {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+
+
+        private ViewPager mViewPager;
+        private ArrayList<Crime> mCrimes;
+
+        @Override
+        public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.viewPager);
@@ -27,7 +32,7 @@ public class CrimePagerActivity extends FragmentActivity {
         mCrimes = CrimeLab.get(this).getCrimes();
 
         FragmentManager fm = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm){
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
             @Override
             public int getCount() {
                 return mCrimes.size();
@@ -41,9 +46,11 @@ public class CrimePagerActivity extends FragmentActivity {
         });
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
 
-            public void onPageScrolled(int pos, float posOffset, int posOffSetPixels) {}
+            public void onPageScrolled(int pos, float posOffset, int posOffSetPixels) {
+            }
 
             public void onPageSelected(int pos) {
                 Crime crime = mCrimes.get(pos);
@@ -53,14 +60,20 @@ public class CrimePagerActivity extends FragmentActivity {
             }
         });
 
+
         UUID crimeId = (UUID) getIntent()
                 .getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
-                    for (int i = 0; i < mCrimes.size(); i++) {
-                        if (mCrimes.get(i).getId().equals(crimeId)) {
-                            mViewPager.setCurrentItem(i);
-                            break;
-                        }
-
-                    }
-                }
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
+                mViewPager.setCurrentItem(i);
+                break;
             }
+
+        }
+    }
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
+    }
+
+}
